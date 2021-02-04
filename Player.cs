@@ -31,7 +31,7 @@ namespace MonoGameInvaders
 
             // Alter velocity when keys are pressed
             if (Global.keys.IsKeyDown(Keys.Left)) velocity.X = -10.0f;
-            if (Global.keys.IsKeyDown(Keys.Right)) velocity.X = 10.0f;           
+            if (Global.keys.IsKeyDown(Keys.Right)) velocity.X = 10.0f;
 
             position += velocity;
 
