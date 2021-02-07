@@ -11,7 +11,7 @@ namespace MonoGameInvaders
         public Vector2 position;
         public Vector2 velocity;
         public Texture2D texture;
-        public int poep;
+        public string betere_ide;
 
         public Invader()
         {
