@@ -14,7 +14,7 @@ namespace MonoGameInvaders
         public Vector2 position;
         public Vector2 velocity;
         public Texture2D texture;
-        public float speed = 3f;
+        public float speed = 30f;
 
         public Bullet()
         {

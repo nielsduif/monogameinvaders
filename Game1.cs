@@ -21,13 +21,13 @@ namespace MonoGameInvaders
         Player thePlayer;
         Bullet theBullet;
         Invader[] invaders = new Invader[16];
-
-        //TODO: Add multiple invaders here
+        SpaceShip spaceShip;
+        List<Shield> shields = new List<Shield>();
 
         public Game1()
             : base()
         {
-            graphics = new GraphicsDeviceManager(this);            
+            graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             graphics.ApplyChanges();
@@ -43,11 +43,8 @@ namespace MonoGameInvaders
         /// </summary>
         protected override void Initialize()
         {
-            //System.Diagnostics.Debug.WriteLine("hoihoi");
-            Console.WriteLine("hallo");
-
             // Pass often referenced variables to Global
-            Global.GraphicsDevice = GraphicsDevice;            
+            Global.GraphicsDevice = GraphicsDevice;
             Global.content = Content;
 
             // Create and Initialize game objects
@@ -61,8 +58,16 @@ namespace MonoGameInvaders
             scanlines = Content.Load<Texture2D>("spr_scanlines");
             base.Initialize();
 
-            for (int i = 0; i < invaders.Length; i++) {
+            for (int i = 0; i < invaders.Length; i++)
+            {
                 invaders[i] = new Invader();
+            }
+
+            spaceShip = new SpaceShip();
+
+            for (int i = 0; i < 4; i++)
+            {
+                shields.Add(new Shield());
             }
         }
 
@@ -73,8 +78,6 @@ namespace MonoGameInvaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            Debug.WriteLine("vet debug");
-
             // Pass keyboard state to Global so we can use it everywhere
             Global.keys = Keyboard.GetState();
             if (Global.keys.IsKeyDown(Keys.Space)) theBullet.Fire(thePlayer.position);
@@ -93,6 +96,22 @@ namespace MonoGameInvaders
                     invaders[i].Reset();
                 }
             }
+
+            spaceShip.Update();
+            if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, spaceShip.position.X, spaceShip.position.Y, spaceShip.texture))
+            {
+                theBullet.Reset();
+                spaceShip.hits++;
+            }
+
+            for (int i = 0; i < shields.Count; i++)
+            {
+                if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, shields[i].position.X, shields[i].position.Y, shields[i].texture))
+                {
+                    theBullet.Reset();
+                    shields.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -100,7 +119,7 @@ namespace MonoGameInvaders
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
-        {            
+        {
             spriteBatch.Begin();
             // Draw the background (and clear the screen)
             spriteBatch.Draw(background, Global.screenRect, Color.White);
@@ -114,6 +133,16 @@ namespace MonoGameInvaders
             for (int i = 0; i < invaders.Length; i++)
             {
                 invaders[i].Draw();
+            }
+
+            if (spaceShip.hits < 2)
+            {
+                spaceShip.Draw();
+            }
+
+            for (int i = 0; i < shields.Count; i++)
+            {
+                shields[i].Draw();
             }
 
             spriteBatch.End();
