@@ -12,15 +12,13 @@ namespace MonoGameInvaders
         public Vector2 velocity;
         public Texture2D texture;
 
-        public Invader()
+        public Invader(string assetName)
         {          
-            string[] textures = { "spr_red_invader", "spr_blue_invader", "spr_yellow_invader", "spr_green_invader" };
-            int rTexture = Global.Random(0, textures.Length);
-            texture = Global.content.Load<Texture2D>(textures[rTexture]);
+            texture = Global.content.Load<Texture2D>(assetName);
             Reset();
         }
 
-        public void Reset()
+        virtual public void Reset()
         {
             position.X = Global.Random(100, Global.width - 100);
             position.Y = Global.Random(0, Global.height - 300);
@@ -29,7 +27,7 @@ namespace MonoGameInvaders
             velocity.Y = 10.0f;
         }
 
-        public void Update()
+        virtual public void Update()
         {
             position.X += velocity.X;
 
@@ -41,7 +39,7 @@ namespace MonoGameInvaders
             }
         }
 
-        public void Draw()
+        virtual public void Draw()
         {
             Global.spriteBatch.Draw(texture, position, Color.White);
         }

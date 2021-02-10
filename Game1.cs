@@ -21,8 +21,11 @@ namespace MonoGameInvaders
 
         Player thePlayer;
         Bullet theBullet;
-        Invader[] invaders = new Invader[16];
+        //Invader[] invaders = new Invader[16];
+        int invaderAmount = 20;
+        List<Invader> invaders = new List<Invader>();
         SpaceShip spaceShip;
+        int shieldAmount = 4;
         List<Shield> shields = new List<Shield>();
 
         public Game1()
@@ -59,14 +62,17 @@ namespace MonoGameInvaders
             scanlines = Content.Load<Texture2D>("spr_scanlines");
             base.Initialize();
 
-            for (int i = 0; i < invaders.Length; i++)
+            for (int i = 0; i < invaderAmount/4; i++)
             {
-                invaders[i] = new Invader();
+                invaders.Add(new RedInvader());
+                invaders.Add(new BlueInvader());
+                invaders.Add(new YellowInvader());
+                invaders.Add(new GreenInvader());
             }
 
             spaceShip = new SpaceShip();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < shieldAmount; i++)
             {
                 shields.Add(new Shield());
             }
@@ -88,7 +94,7 @@ namespace MonoGameInvaders
 
             base.Update(gameTime);
 
-            for (int i = 0; i < invaders.Length; i++)
+            for (int i = 0; i < invaderAmount; i++)
             {
                 invaders[i].Update();
                 if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, invaders[i].position.X, invaders[i].position.Y, invaders[i].texture))
@@ -131,7 +137,7 @@ namespace MonoGameInvaders
 
             spriteBatch.Draw(scanlines, Global.screenRect, Color.White);
 
-            for (int i = 0; i < invaders.Length; i++)
+            for (int i = 0; i < invaderAmount; i++)
             {
                 invaders[i].Draw();
             }
