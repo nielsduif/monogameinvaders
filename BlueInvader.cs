@@ -10,9 +10,9 @@ namespace MonoGameInvaders
         {
         }
 
-        public override void Init()
+        public override void Start()
         {
-            base.Init();
+            base.Start();
             velocity.Y = 0;
         }
     }

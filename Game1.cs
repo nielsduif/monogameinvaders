@@ -99,15 +99,15 @@ namespace MonoGameInvaders
                 invaders[i].Update();
                 if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, invaders[i].position.X, invaders[i].position.Y, invaders[i].texture))
                 {
-                    theBullet.Reset();
-                    invaders[i].Init();
+                    theBullet.Start();
+                    invaders[i].Start();
                 }
             }
 
             spaceShip.Update();
             if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, spaceShip.position.X, spaceShip.position.Y, spaceShip.texture))
             {
-                theBullet.Reset();
+                theBullet.Start();
                 spaceShip.hits++;
             }
 
@@ -115,7 +115,7 @@ namespace MonoGameInvaders
             {
                 if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, shields[i].position.X, shields[i].position.Y, shields[i].texture))
                 {
-                    theBullet.Reset();
+                    theBullet.Start();
                     shields.RemoveAt(i);
                 }
             }

@@ -6,30 +6,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameInvaders
 {
-    class Invader
+    class Invader : GameObject
     {
-        public Vector2 position;
-        public Vector2 velocity;
-        public Texture2D texture;
-        public int test;
+        public Invader(string assetName) : base(assetName)
+        {
 
-        public Invader(string assetName)
-        {          
-            texture = Global.content.Load<Texture2D>(assetName);
-            Init();
         }
 
-        virtual public void Init()
+        public override void Start()
         {
+            base.Start();
             position.X = Global.Random(100, Global.width - 100);
             position.Y = Global.Random(0, Global.height - 300);
-
-            velocity.X = 3.0f;
-            velocity.Y = 10.0f;
         }
 
-        public virtual void Update()
+        public override void Update()
         {
+            base.Update();
             position.X += velocity.X;
 
             if ((position.X > Global.width - texture.Width) || (position.X < 0))
@@ -38,11 +31,6 @@ namespace MonoGameInvaders
                 velocity.X = -velocity.X;
                 position.Y += velocity.Y;
             }
-        }
-
-        virtual public void Draw()
-        {
-            Global.spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

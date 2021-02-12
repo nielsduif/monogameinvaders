@@ -9,7 +9,6 @@ namespace MonoGameInvaders
         int frameCounter;
         public YellowInvader() : base("spr_yellow_invader")
         {
-
         }
 
         public override void Update()

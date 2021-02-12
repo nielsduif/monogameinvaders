@@ -8,7 +8,6 @@ namespace MonoGameInvaders
     {
         public RedInvader() : base("spr_red_invader")
         {
-
         }
     }
 }
