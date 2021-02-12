@@ -19,14 +19,10 @@ namespace MonoGameInvaders
         SpriteBatch spriteBatch;
         Texture2D background, scanlines;
 
-        Player thePlayer;
-        Bullet theBullet;
-        //Invader[] invaders = new Invader[16];
         int invaderAmount = 20;
-        List<Invader> invaders = new List<Invader>();
-        SpaceShip spaceShip;
         int shieldAmount = 4;
-        List<Shield> shields = new List<Shield>();
+        List<GameObject> gameObjects = new List<GameObject>();
+
 
         public Game1()
             : base()
@@ -52,8 +48,8 @@ namespace MonoGameInvaders
             Global.content = Content;
 
             // Create and Initialize game objects
-            thePlayer = new Player();
-            theBullet = new Bullet();
+            gameObjects.Add(new Player());
+            gameObjects.Add(new Bullet());
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -64,17 +60,17 @@ namespace MonoGameInvaders
 
             for (int i = 0; i < invaderAmount / 4; i++)
             {
-                invaders.Add(new RedInvader());
-                invaders.Add(new BlueInvader());
-                invaders.Add(new YellowInvader());
-                invaders.Add(new GreenInvader());
+                gameObjects.Add(new RedInvader());
+                gameObjects.Add(new BlueInvader());
+                gameObjects.Add(new YellowInvader());
+                gameObjects.Add(new GreenInvader());
             }
 
-            spaceShip = new SpaceShip();
+            gameObjects.Add(new SpaceShip());
 
             for (int i = 0; i < shieldAmount; i++)
             {
-                shields.Add(new Shield());
+                gameObjects.Add(new Shield());
             }
         }
 
@@ -87,36 +83,66 @@ namespace MonoGameInvaders
         {
             // Pass keyboard state to Global so we can use it everywhere
             Global.keys = Keyboard.GetState();
-            if (Global.keys.IsKeyDown(Keys.Space)) theBullet.Fire(thePlayer.position);
-            // Update the game objects
-            thePlayer.Update();
-            theBullet.Update();
 
+            // Update the game objects
             base.Update(gameTime);
 
-            for (int i = 0; i < invaderAmount; i++)
+            foreach (GameObject GO in gameObjects)
             {
-                invaders[i].Update();
-                if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, invaders[i].position.X, invaders[i].position.Y, invaders[i].texture))
-                {
-                    theBullet.Start();
-                    invaders[i].Start();
-                }
+                GO.Update();
             }
 
-            spaceShip.Update();
-            if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, spaceShip.position.X, spaceShip.position.Y, spaceShip.texture))
-            {
-                theBullet.Start();
-                spaceShip.hits++;
-            }
 
-            for (int i = 0; i < shields.Count; i++)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
-                if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, shields[i].position.X, shields[i].position.Y, shields[i].texture))
+                for (int x = 0; x < gameObjects.Count; x++)
                 {
-                    theBullet.Start();
-                    shields.RemoveAt(i);
+                    if (gameObjects[i] is Bullet)
+                    {
+                        Bullet B = gameObjects[i] as Bullet;
+                        if (gameObjects[x] is Player)
+                        {
+                            Player P = gameObjects[x] as Player;
+                            if (Global.keys.IsKeyDown(Keys.Space))
+                            {
+                                B.Fire(P.position);
+                            }
+                        }
+
+                        else if (gameObjects[x] is Invader)
+                        {
+                            Invader I = gameObjects[x] as Invader;
+                            if (B.overlaps(B.position.X, B.position.Y, B.texture, I.position.X, I.position.Y, I.texture))
+                            {
+                                B.Start();
+                                I.Start();
+                            }
+                        }
+                        
+                        else if (gameObjects[x] is Shield)
+                        {
+                            Shield S = gameObjects[x] as Shield;
+                            if (B.overlaps(B.position.X, B.position.Y, B.texture, S.position.X, S.position.Y, S.texture))
+                            {
+                                B.Start();
+                                gameObjects.RemoveAt(x);
+                            }
+                        }
+
+                        else if (gameObjects[x] is SpaceShip)
+                        {
+                            SpaceShip SS = gameObjects[x] as SpaceShip;
+                            if (B.overlaps(B.position.X, B.position.Y, B.texture, SS.position.X, SS.position.Y, SS.texture))
+                            {
+                                B.Start();
+                                SS.hits++;
+                                if (SS.hits >= 2)
+                                {
+                                    gameObjects.RemoveAt(x);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -132,41 +158,12 @@ namespace MonoGameInvaders
             spriteBatch.Draw(background, Global.screenRect, Color.White);
 
             // Draw the game objects
-            thePlayer.Draw();
-            theBullet.Draw();
-
-            spriteBatch.Draw(scanlines, Global.screenRect, Color.White);
-
-            for (int i = 0; i < invaderAmount; i++)
+            foreach (GameObject GO in gameObjects)
             {
-                invaders[i].Draw();
+                GO.Draw();
             }
-
-            if (spaceShip.hits < 2)
-            {
-                spaceShip.Draw();
-            }
-
-            for (int i = 0; i < shields.Count; i++)
-            {
-                shields[i].Draw();
-            }
-
             spriteBatch.End();
             base.Draw(gameTime);
-        }
-        Boolean overlaps(float x0, float y0, Texture2D texture0, float x1, float y1, Texture2D texture1)
-        {
-            int w0 = texture0.Width,
-              h0 = texture0.Height,
-              w1 = texture1.Width,
-              h1 = texture1.Height;
-
-            if (x0 > x1 + w1 || x0 + w0 < x1 ||
-              y0 > y1 + h1 || y0 + h0 < y1)
-                return false;
-            else
-                return true;
         }
     }
 }

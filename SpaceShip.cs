@@ -7,20 +7,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameInvaders
 {
-    class SpaceShip
+    class SpaceShip : GameObject
     {
-        public Vector2 position;
-        public Vector2 velocity;
-        public Texture2D texture;
         public int hits;
 
-        public SpaceShip()
+        public SpaceShip() : base("spr_enemy_ship")
         {
-            texture = Global.content.Load<Texture2D>("spr_enemy_ship");
-            Start();
         }
 
-        public void Start()
+        public override void Start()
         {
             position.X = Global.Random(100, Global.width - 100);
             position.Y = texture.Height;
@@ -29,9 +24,8 @@ namespace MonoGameInvaders
             velocity.Y = 10.0f;
         }
 
-        public void Update()
+        public override void Update()
         {
-
             position.X += velocity.X;
 
             if ((position.X > Global.width - texture.Width) || (position.X < 0))
@@ -39,11 +33,6 @@ namespace MonoGameInvaders
                 position.X -= velocity.X;
                 velocity.X = -velocity.X;
             }
-        }
-
-        public void Draw()
-        {
-            Global.spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

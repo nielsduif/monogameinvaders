@@ -7,26 +7,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameInvaders
 {
-    class Shield
+    class Shield : GameObject
     {
-        public Vector2 position;
-        public Texture2D texture;
-
-        public Shield()
+        public Shield() : base("spr_shield")
         {
-            texture = Global.content.Load<Texture2D>("spr_shield");
-            Start();
         }
 
-        public void Start()
+        public override void Start()
         {
             position.X = Global.Random(100, Global.width - 100);
             position.Y = Global.Random(Global.height - 300, Global.height - texture.Height);
-        }
-
-        public void Draw()
-        {
-            Global.spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

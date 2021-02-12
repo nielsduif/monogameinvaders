@@ -10,7 +10,7 @@ namespace MonoGameInvaders
     {
         public Invader(string assetName) : base(assetName)
         {
-
+            Start();
         }
 
         public override void Start()
@@ -18,6 +18,8 @@ namespace MonoGameInvaders
             base.Start();
             position.X = Global.Random(100, Global.width - 100);
             position.Y = Global.Random(0, Global.height - 300);
+
+            velocity.X = 3;
         }
 
         public override void Update()

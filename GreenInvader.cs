@@ -13,7 +13,7 @@ namespace MonoGameInvaders
         public override void Start()
         {
             base.Start();
-            velocity.Y = 1;
+            velocity.Y = .5f;
         }
 
         public override void Update()

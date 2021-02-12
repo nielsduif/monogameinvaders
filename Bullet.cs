@@ -28,7 +28,6 @@ namespace MonoGameInvaders
         {
             if (isFired)
             {
-
                 if (position.Y < 0)
                     Start();
             }
@@ -40,10 +39,23 @@ namespace MonoGameInvaders
             if (!isFired)
             {
                 isFired = true;
-                this.position.X = startPosition.X;
-                this.position.Y = startPosition.Y;
+                position.X = startPosition.X;
+                position.Y = startPosition.Y;
                 velocity.Y = -speed;
             }
+        }
+        public Boolean overlaps(float x0, float y0, Texture2D texture0, float x1, float y1, Texture2D texture1)
+        {
+            int w0 = texture0.Width,
+              h0 = texture0.Height,
+              w1 = texture1.Width,
+              h1 = texture1.Height;
+
+            if (x0 > x1 + w1 || x0 + w0 < x1 ||
+              y0 > y1 + h1 || y0 + h0 < y1)
+                return false;
+            else
+                return true;
         }
     }
 }
