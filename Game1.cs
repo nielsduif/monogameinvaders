@@ -62,7 +62,7 @@ namespace MonoGameInvaders
             scanlines = Content.Load<Texture2D>("spr_scanlines");
             base.Initialize();
 
-            for (int i = 0; i < invaderAmount/4; i++)
+            for (int i = 0; i < invaderAmount / 4; i++)
             {
                 invaders.Add(new RedInvader());
                 invaders.Add(new BlueInvader());
@@ -100,7 +100,7 @@ namespace MonoGameInvaders
                 if (overlaps(theBullet.position.X, theBullet.position.Y, theBullet.texture, invaders[i].position.X, invaders[i].position.Y, invaders[i].texture))
                 {
                     theBullet.Reset();
-                    invaders[i].Reset();
+                    invaders[i].Init();
                 }
             }
 

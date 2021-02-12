@@ -8,7 +8,12 @@ namespace MonoGameInvaders
     {
         public BlueInvader() : base("spr_blue_invader")
         {
+        }
 
+        public override void Init()
+        {
+            base.Init();
+            velocity.Y = 0;
         }
     }
 }

@@ -11,14 +11,15 @@ namespace MonoGameInvaders
         public Vector2 position;
         public Vector2 velocity;
         public Texture2D texture;
+        public int test;
 
         public Invader(string assetName)
         {          
             texture = Global.content.Load<Texture2D>(assetName);
-            Reset();
+            Init();
         }
 
-        virtual public void Reset()
+        virtual public void Init()
         {
             position.X = Global.Random(100, Global.width - 100);
             position.Y = Global.Random(0, Global.height - 300);
@@ -27,7 +28,7 @@ namespace MonoGameInvaders
             velocity.Y = 10.0f;
         }
 
-        virtual public void Update()
+        public virtual void Update()
         {
             position.X += velocity.X;
 
